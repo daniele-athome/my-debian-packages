@@ -5,7 +5,8 @@ Some Debian packages I build for my personal use.
 All packages are available as GitHub Actions artifacts: feel free to download and use them.
 
 > [!NOTE]
-> I might use GitHub releases one day and put the packages there.
+> I might use GitHub releases one day and put the packages there, or maybe
+> [create a PPA](https://assafmo.github.io/2019/05/02/ppa-repo-hosted-on-github.html).
 
 ## moonlight-qt
 
