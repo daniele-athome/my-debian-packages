@@ -21,7 +21,7 @@ jobs:
       - name: Extract Debian package from image
         run: |
           container_id=$(docker create build-moonlight-qt)
-          docker cp "$container_id:/out/moonlight-qt_6.1.0-3_amd64.deb" ./moonlight-qt_6.1.0-3_amd64.deb
+          docker cp "$container_id:/out/moonlight-qt_6.1.0-3_amd64.deb" .
           docker rm "$container_id"
 
       - name: Upload Debian package
