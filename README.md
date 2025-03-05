@@ -2,7 +2,7 @@
 
 Some Debian packages I build for my personal use.
 
-All packages are available as GitHub Actions job artifacts: feel free to download and use them.
+All packages are available as GitHub Actions artifacts: feel free to download and use them.
 
 > [!NOTE]
 > I might use GitHub releases one day and put the packages there.
