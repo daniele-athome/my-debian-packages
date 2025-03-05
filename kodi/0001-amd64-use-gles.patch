@@ -1,0 +1,25 @@
+From 7a567037a3a200250bad2b3a702e7738a44dcad4 Mon Sep 17 00:00:00 2001
+From: Daniele Ricci <daniele@casaricci.it>
+Date: Wed, 5 Mar 2025 23:07:31 +0100
+Subject: [PATCH] amd64: use gles
+
+---
+ debian/rules | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/debian/rules b/debian/rules
+index eefd0c1..fed9d27 100755
+--- a/debian/rules
++++ b/debian/rules
+@@ -85,7 +85,7 @@ endif
+ 
+ # Build arm* architectures with GLES instead of GL
+ # (Closes: 1056563)
+-ifneq (,$(filter armel armhf arm64,$(DEB_HOST_ARCH)))
++ifneq (,$(filter armel armhf arm64 amd64,$(DEB_HOST_ARCH)))
+ EXTRA_FLAGS := $(EXTRA_FLAGS) -DAPP_RENDER_SYSTEM=gles
+ else
+ EXTRA_FLAGS := $(EXTRA_FLAGS) -DAPP_RENDER_SYSTEM=gl
+-- 
+2.47.2
+
