@@ -6,7 +6,7 @@ FROM amd64/debian:bookworm-slim
 RUN mkdir -p /opt/scripts && \
     mkdir /out && \
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y git ca-certificates devscripts && \
+    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y git ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     git clone https://github.com/cgutman/moonlight-packaging && \
@@ -24,7 +24,7 @@ ENV COMMIT=v6.1.0
 
 RUN mv scripts/install-base-deps.sh /opt/scripts/
 RUN /bin/bash -c /opt/scripts/install-base-deps.sh && \
-    apt-get install -y --no-install-recommends libwayland-dev wayland-protocols libva-dev libvdpau-dev && \
+    apt-get install -y --no-install-recommends build-essential libwayland-dev wayland-protocols libva-dev libvdpau-dev && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/*
 
@@ -43,6 +43,7 @@ RUN mv scripts/build-package.sh /opt/scripts/
 # override this with --build-arg
 ARG DEBEMAIL="Debian Custom Package <debian@custom.pkg>"
 ENV DEBEMAIL=${DEBEMAIL}
+RUN /bin/sh -c 'cd /opt && dch --local "~custom" -p "Non-maintainer configuration release"'
 
 # Change build-command from Dockerfile to RUN-command
 RUN /bin/bash -c /opt/scripts/build-package.sh
