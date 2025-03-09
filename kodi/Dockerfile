@@ -16,7 +16,6 @@ ARG DEBEMAIL="Debian Custom Package <debian@custom.pkg>"
 ENV DEBEMAIL=${DEBEMAIL}
 RUN apt-get source kodi && \
     cd kodi-*/ && \
-    dch --local "~custom" -p "Non-maintainer configuration release" && \
     patch -p1 < ../0001-amd64-use-gles.patch && \
     dpkg-buildpackage -rfakeroot -b -uc -us && \
     rm -rf /var/lib/apt/lists/*
