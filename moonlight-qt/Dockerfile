@@ -43,7 +43,7 @@ RUN mv scripts/build-package.sh /opt/scripts/
 # override this with --build-arg
 ARG DEBEMAIL="Debian Custom Package <debian@custom.pkg>"
 ENV DEBEMAIL=${DEBEMAIL}
-RUN /bin/sh -c 'cd /opt && dch --local "~custom" -p "Non-maintainer configuration release"'
+RUN /bin/sh -c 'cd /opt && dch --local "+custom" -p "Non-maintainer configuration release"'
 
 # Change build-command from Dockerfile to RUN-command
 RUN /bin/bash -c /opt/scripts/build-package.sh
