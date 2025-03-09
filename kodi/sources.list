@@ -1,0 +1,7 @@
+deb-src http://ftp.debian.org/debian/ trixie main non-free non-free-firmware contrib
+
+deb http://ftp.debian.org/debian bookworm main non-free contrib
+deb-src http://ftp.debian.org/debian bookworm main non-free contrib
+
+deb http://ftp.debian.org/debian bookworm-backports main
+deb-src http://ftp.debian.org/debian bookworm-backports main
