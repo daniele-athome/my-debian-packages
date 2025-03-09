@@ -2,11 +2,12 @@
 
 Some Debian packages I build for my personal use.
 
-All packages are available as GitHub Actions artifacts: feel free to download and use them.
+To add this repository as source:
 
-> [!NOTE]
-> I might use GitHub releases one day and put the packages there, or maybe
-> [create a PPA](https://assafmo.github.io/2019/05/02/ppa-repo-hosted-on-github.html).
+```shell
+curl -sfL https://daniele-athome.github.io/my-debian-packages/gpg.key | sudo tee /etc/apt/keyrings/daniele-athome-my.gpg 
+echo "deb [signed-by=/etc/apt/keyrings/daniele-athome-my.gpg] https://daniele-athome.github.io/my-debian-packages/ trixie main" | sudo tee /etc/apt/sources.list.d/daniele-athome-my.list
+```
 
 ## moonlight-qt
 
@@ -18,6 +19,8 @@ Thanks to the wonderful work of [@veldenb](https://github.com/veldenb/plugin.pro
 actually a fork of the one written by @veldenb.
 
 ## kodi
+
+> Actually only some of the Kodi packages are available. You can install them along with the other official Debian packages.
 
 Kodi for Debian is built for the GL platform. For some reason, Kodi developers implemented HDR only for the GLES
 platform. So I'm building Kodi by forcing the GLES platform.

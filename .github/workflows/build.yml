@@ -28,19 +28,19 @@ jobs:
 
       - name: Build moonlight-qt
         run: |
-          docker build -t build-moonlight-qt moonlight-qt
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" -t build-moonlight-qt moonlight-qt
 
       - name: Extract Debian package from image
         run: |
           container_id=$(docker create build-moonlight-qt)
-          docker cp "$container_id:/out/moonlight-qt_6.1.0-3_amd64.deb" .
+          docker cp "$container_id:/out/" .
           docker rm "$container_id"
 
       - name: Upload Debian package
         uses: actions/upload-artifact@v4
         with:
           name: moonlight-qt-deb
-          path: ./moonlight-qt_6.1.0-3_amd64.deb
+          path: ./out/*.deb
 
   build-kodi:
     name: Build kodi
@@ -52,19 +52,22 @@ jobs:
 
       - name: Build kodi
         run: |
-          docker build -t build-kodi kodi
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" -t build-kodi kodi
 
       - name: Extract Debian package from image
         run: |
           container_id=$(docker create build-kodi)
-          docker cp "$container_id:/out/kodi-bin_21.2+dfsg-1_amd64.deb" .
+          docker cp "$container_id:/out/" .
           docker rm "$container_id"
 
       - name: Upload Debian package
         uses: actions/upload-artifact@v4
         with:
           name: kodi-deb
-          path: ./kodi-bin_21.2+dfsg-1_amd64.deb
+          path: |
+            ./out/kodi_*.deb
+            ./out/kodi-bin_*.deb
+            ./out/kodi-data_*.deb
 
   build-repository:
     name: Create APT repository
