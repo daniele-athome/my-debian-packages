@@ -112,7 +112,9 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: ${{ steps.create-apt-repo.outputs.dir }}
+          path: |
+            ${{ steps.create-apt-repo.outputs.dir }}
+            README.md
 
   deploy-repository:
     name: Deploy APT repository
