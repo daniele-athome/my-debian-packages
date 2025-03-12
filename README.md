@@ -9,6 +9,15 @@ curl -sfL https://daniele-athome.github.io/my-debian-packages/gpg.key | sudo tee
 echo "deb [signed-by=/etc/apt/keyrings/daniele-athome-my.gpg] https://daniele-athome.github.io/my-debian-packages/ trixie main" | sudo tee /etc/apt/sources.list.d/daniele-athome-my.list
 ```
 
+In order to make apt choose my packages instead of the Debian ones, you'll need to either specify the version manually
+(add `+custom1` to the Debian version) or create a file in `/etc/apt/preferences.d` containing this pinning rule:
+
+```
+Package: *
+Pin: origin "daniele-athome.github.io"
+Pin-Priority: 1000
+```
+
 ## moonlight-qt
 
 For some reason, the AppImage build doesn't work well without X11 (I don't know, it's probably not built with all
