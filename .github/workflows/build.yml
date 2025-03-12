@@ -108,13 +108,15 @@ jobs:
           architectures: ${{ env.ARCHITECTURES }}
           scan-dir: repo
 
+      - name: Copy other static files
+        run: |
+          cp README.md "${{ steps.create-apt-repo.outputs.dir }}" 
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
-          path: |
-            ${{ steps.create-apt-repo.outputs.dir }}
-            README.md
+          path: ${{ steps.create-apt-repo.outputs.dir }}
 
   deploy-repository:
     name: Deploy APT repository
