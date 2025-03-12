@@ -1,0 +1,25 @@
+<html lang="en">
+<head>
+    <title>My Debian packages - daniele-athome</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+
+<main class="container">
+    <h1>My Debian packages - daniele-athome</h1>
+
+    <p>Some Debian packages I build for my personal use.</p>
+
+    <p>To add this repository as source:</p>
+
+    <div>
+        <pre><code>curl -sfL https://daniele-athome.github.io/my-debian-packages/gpg.key | sudo tee /etc/apt/keyrings/daniele-athome-my.gpg
+echo "deb [signed-by=/etc/apt/keyrings/daniele-athome-my.gpg] https://daniele-athome.github.io/my-debian-packages/ trixie main" | sudo tee /etc/apt/sources.list.d/daniele-athome-my.list</code></pre>
+    </div>
+
+    <p>More details in the <a href="https://github.com/daniele-athome/my-debian-packages">GitHub repository</a>.</p>
+
+</main>
+
+</body>
+</html>

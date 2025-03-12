@@ -110,7 +110,7 @@ jobs:
 
       - name: Copy other static files
         run: |
-          cp README.md "${{ steps.create-apt-repo.outputs.dir }}" 
+          cp .github/workflows/repo_index.html "${{ steps.create-apt-repo.outputs.dir }}/index.html" 
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
