@@ -32,6 +32,7 @@ actually a fork of the one written by @veldenb.
 > Actually only some of the Kodi packages are available. You can install them along with the other official Debian packages.
 
 Kodi for Debian is built for the GL platform. For some reason, Kodi developers implemented HDR only for the GLES
-platform. So I'm building Kodi by forcing the GLES platform.
+platform. So I'm building Kodi by forcing the GLES platform. **Please note that HDR works only if Kodi is launched from
+TTY** (using the command `kodi-standalone`).
 
 This build takes the original Debian package and just patches the build script.
