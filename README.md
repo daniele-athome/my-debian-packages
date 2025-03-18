@@ -18,8 +18,6 @@ Pin: origin "daniele-athome.github.io"
 Pin-Priority: 1000
 ```
 
-The repository uses trixie as the suite, but actually the packages are built in bookworm so they should be compatible.
-
 ## moonlight-qt
 
 For some reason, the AppImage build doesn't work well without X11 (I don't know, it's probably not built with all
