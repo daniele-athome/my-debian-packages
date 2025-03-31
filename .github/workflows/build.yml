@@ -44,6 +44,33 @@ jobs:
           name: moonlight-qt-deb
           path: ./out/*.deb
 
+  build-moonlight-qt-nightly:
+    name: Build moonlight-qt nightly
+    runs-on: ubuntu-latest
+
+    env:
+      MOONLIGHT_REPO: https://github.com/games-on-whales/moonlight-qt
+      MOONLIGHT_COMMIT: 1c06825543037c5ba1477847128942e8b8d9d798
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build moonlight-qt
+        run: |
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
+
+      - name: Extract Debian package from image
+        run: |
+          container_id=$(docker create build-moonlight-qt)
+          docker cp "$container_id:/out/" .
+          docker rm "$container_id"
+
+      - name: Upload Debian package
+        uses: actions/upload-artifact@v4
+        with:
+          name: moonlight-qt-nightly-deb
+          path: ./out/*.deb
+
   build-kodi:
     name: Build kodi
     runs-on: ubuntu-latest
@@ -76,6 +103,7 @@ jobs:
     needs:
       - build-kodi
       - build-moonlight-qt
+      - build-moonlight-qt-nightly
     runs-on: ubuntu-latest
 
     outputs:
@@ -98,6 +126,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: moonlight-qt-deb
+          path: repo
+
+      - name: Retrieve moonlight-qt nightly packages
+        uses: actions/download-artifact@v4
+        with:
+          name: moonlight-qt-nightly-deb
           path: repo
 
       - uses: morph027/apt-repo-action@v2

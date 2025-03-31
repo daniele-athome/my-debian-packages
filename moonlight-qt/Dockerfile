@@ -24,6 +24,10 @@ WORKDIR /moonlight-packaging
 ### start ###
 ENV TARGET=desktop
 ENV DISTRO=bookworm
+
+ARG GIT_REPO="https://github.com/moonlight-stream/moonlight-qt"
+ARG COMMIT="v6.1.0"
+
 ENV GIT_REPO=${GIT_REPO}
 ENV COMMIT=${COMMIT}
 
