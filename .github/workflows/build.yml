@@ -16,6 +16,8 @@ env:
   CODENAME: trixie
   COMPONENTS: main
   ARCHITECTURES: amd64
+  MOONLIGHT_REPO: https://github.com/moonlight-stream/moonlight-qt
+  MOONLIGHT_COMMIT: v6.1.0
 
 jobs:
   build-moonlight-qt:
@@ -28,7 +30,7 @@ jobs:
 
       - name: Build moonlight-qt
         run: |
-          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" -t build-moonlight-qt moonlight-qt
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
 
       - name: Extract Debian package from image
         run: |

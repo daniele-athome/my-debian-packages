@@ -1,0 +1,13 @@
+diff --git a/scripts/build-package.sh b/scripts/build-package.sh
+index 2a83478..acfe053 100755
+--- a/scripts/build-package.sh
++++ b/scripts/build-package.sh
+@@ -3,7 +3,7 @@ set -e
+ # Check out the source without the Windows/Mac prebuilts
+ [[ ! -z "$COMMIT" ]] || COMMIT="master"
+ echo "Checking out $COMMIT"
+-git clone https://github.com/moonlight-stream/moonlight-qt.git
++git clone "$GIT_REPO"
+ cd moonlight-qt
+ git checkout $COMMIT
+ git log -1

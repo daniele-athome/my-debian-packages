@@ -2,15 +2,19 @@
 # Use latest compatible Debian version
 FROM amd64/debian:bookworm-slim
 
+COPY 0001-custom-repo-version.patch /tmp/
+
 # Checkout Moonlight-packaging
 RUN mkdir -p /opt/scripts && \
     mkdir /out && \
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y git ca-certificates && \
+    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y git ca-certificates patch && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     git clone https://github.com/cgutman/moonlight-packaging && \
     cd moonlight-packaging && \
+    patch -p1 < /tmp/0001-custom-repo-version.patch && \
+    rm -f /tmp/0001-custom-repo-version.patch && \
     git submodule update --init --recursive && \
     mv debian /opt/
 
@@ -20,7 +24,8 @@ WORKDIR /moonlight-packaging
 ### start ###
 ENV TARGET=desktop
 ENV DISTRO=bookworm
-ENV COMMIT=v6.1.0
+ENV GIT_REPO=${GIT_REPO}
+ENV COMMIT=${COMMIT}
 
 RUN mv scripts/install-base-deps.sh /opt/scripts/
 RUN /bin/bash -c /opt/scripts/install-base-deps.sh && \
@@ -43,7 +48,8 @@ RUN mv scripts/build-package.sh /opt/scripts/
 # override this with --build-arg
 ARG DEBEMAIL="Debian Custom Package <debian@custom.pkg>"
 ENV DEBEMAIL=${DEBEMAIL}
-RUN /bin/sh -c 'cd /opt && dch --local "+custom" -p "Non-maintainer configuration release"'
+COPY --chmod=775 setup.sh /opt/setup.sh
+RUN /bin/sh -c 'cd /opt && ./setup.sh'
 
 # Change build-command from Dockerfile to RUN-command
 RUN /bin/bash -c /opt/scripts/build-package.sh
