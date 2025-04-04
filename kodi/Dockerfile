@@ -1,9 +1,6 @@
 FROM amd64/debian:trixie-slim
 
-# Kodi in trixie doesn't currently build (as of 2025-03-09) because of libpipewire 1.4.0 being incompatible - previously
-# was 1.2.7. So we are using libpipewire from bookworm-backports which is still at 1.2.7.
 COPY sources.list /etc/apt/sources.list.d/debian-other.list
-COPY apt_preferences /etc/apt/preferences.d/pinning
 
 RUN mkdir /out && \
     apt-get update && \
