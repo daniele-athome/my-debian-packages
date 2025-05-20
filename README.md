@@ -5,8 +5,8 @@ Some Debian packages I build for my personal use.
 To add this repository as source:
 
 ```shell
-curl -sfL https://daniele-athome.github.io/my-debian-packages/gpg.key | sudo tee /etc/apt/keyrings/daniele-athome-my.gpg 
-echo "deb [signed-by=/etc/apt/keyrings/daniele-athome-my.gpg] https://daniele-athome.github.io/my-debian-packages/ trixie main" | sudo tee /etc/apt/sources.list.d/daniele-athome-my.list
+curl -sfL https://daniele-athome.github.io/my-debian-packages/gpg.key | sudo tee /etc/apt/keyrings/daniele-athome-my.asc
+echo "deb [signed-by=/etc/apt/keyrings/daniele-athome-my.asc] https://daniele-athome.github.io/my-debian-packages/ trixie main" | sudo tee /etc/apt/sources.list.d/daniele-athome-my.list
 ```
 
 In order to make apt choose my packages instead of the Debian ones, you'll need to either specify the version manually
