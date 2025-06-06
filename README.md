@@ -1,6 +1,6 @@
 # My Debian packages
 
-Some Debian packages I build for my personal use.
+Some Debian packages I build for my personal use. **All builds are done by GitHub Actions directly from source code**, so there should be no trust issues.
 
 To add this repository as source:
 
