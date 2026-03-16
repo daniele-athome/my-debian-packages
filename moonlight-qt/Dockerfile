@@ -2,6 +2,9 @@
 # Use latest compatible Debian version
 FROM amd64/debian:trixie-slim
 
+ARG GIT_REPO
+ARG GIT_COMMIT
+
 COPY 0001-custom-repo-version.patch /tmp/
 
 # Checkout Moonlight-packaging
@@ -26,7 +29,7 @@ ENV TARGET=desktop
 ENV DISTRO=trixie
 
 ENV GIT_REPO=${GIT_REPO}
-ENV COMMIT=${COMMIT}
+ENV COMMIT=${GIT_COMMIT}
 
 RUN mv scripts/install-base-deps.sh /opt/scripts/
 RUN /bin/bash -c /opt/scripts/install-base-deps.sh && \

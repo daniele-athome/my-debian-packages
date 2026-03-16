@@ -30,7 +30,7 @@ jobs:
 
       - name: Build moonlight-qt
         run: |
-          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="GIT_COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
 
       - name: Extract Debian package from image
         run: |
@@ -57,7 +57,7 @@ jobs:
 
       - name: Build moonlight-qt
         run: |
-          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="GIT_COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
 
       - name: Extract Debian package from image
         run: |
