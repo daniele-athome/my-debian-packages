@@ -134,7 +134,7 @@ jobs:
           name: moonlight-qt-nightly-deb
           path: repo
 
-      - uses: morph027/apt-repo-action@v2
+      - uses: morph027/apt-repo-action@v3
         id: create-apt-repo
         with:
           repo-name: ${{ env.REPO_NAME }}
