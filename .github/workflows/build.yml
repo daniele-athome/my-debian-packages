@@ -20,7 +20,6 @@ env:
 
 jobs:
   build-moonlight-qt:
-    name: Build moonlight-qt
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,6 +31,8 @@ jobs:
           - MOONLIGHT_REPO: https://github.com/games-on-whales/moonlight-qt
             MOONLIGHT_COMMIT: 1c06825543037c5ba1477847128942e8b8d9d798
             name: nightly
+
+    name: Build moonlight-qt (${{ matrix.name }})
 
     steps:
       - name: Checkout repository
