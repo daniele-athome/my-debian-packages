@@ -12,17 +12,26 @@ permissions:
   id-token: write
 
 env:
+  # for the apt repository
   REPO_NAME: daniele-athome-my
   CODENAME: trixie
   COMPONENTS: main
   ARCHITECTURES: amd64
-  MOONLIGHT_REPO: https://github.com/moonlight-stream/moonlight-qt
-  MOONLIGHT_COMMIT: v6.1.0
 
 jobs:
   build-moonlight-qt:
     name: Build moonlight-qt
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - MOONLIGHT_REPO: https://github.com/moonlight-stream/moonlight-qt
+            MOONLIGHT_COMMIT: v6.1.0
+            name: stable
+
+          - MOONLIGHT_REPO: https://github.com/games-on-whales/moonlight-qt
+            MOONLIGHT_COMMIT: 1c06825543037c5ba1477847128942e8b8d9d798
+            name: nightly
 
     steps:
       - name: Checkout repository
@@ -30,7 +39,7 @@ jobs:
 
       - name: Build moonlight-qt
         run: |
-          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="GIT_COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ matrix.MOONLIGHT_REPO }}" --build-arg="GIT_COMMIT=${{ matrix.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
 
       - name: Extract Debian package from image
         run: |
@@ -41,34 +50,7 @@ jobs:
       - name: Upload Debian package
         uses: actions/upload-artifact@v4
         with:
-          name: moonlight-qt-deb
-          path: ./out/*.deb
-
-  build-moonlight-qt-nightly:
-    name: Build moonlight-qt nightly
-    runs-on: ubuntu-latest
-
-    env:
-      MOONLIGHT_REPO: https://github.com/games-on-whales/moonlight-qt
-      MOONLIGHT_COMMIT: 1c06825543037c5ba1477847128942e8b8d9d798
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Build moonlight-qt
-        run: |
-          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ env.MOONLIGHT_REPO }}" --build-arg="GIT_COMMIT=${{ env.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
-
-      - name: Extract Debian package from image
-        run: |
-          container_id=$(docker create build-moonlight-qt)
-          docker cp "$container_id:/out/" .
-          docker rm "$container_id"
-
-      - name: Upload Debian package
-        uses: actions/upload-artifact@v4
-        with:
-          name: moonlight-qt-nightly-deb
+          name: moonlight-qt-deb-${{ matrix.name }}
           path: ./out/*.deb
 
   build-kodi:
@@ -103,7 +85,6 @@ jobs:
     needs:
       - build-kodi
       - build-moonlight-qt
-      - build-moonlight-qt-nightly
     runs-on: ubuntu-latest
 
     outputs:
@@ -125,14 +106,9 @@ jobs:
       - name: Retrieve moonlight-qt packages
         uses: actions/download-artifact@v4
         with:
-          name: moonlight-qt-deb
+          pattern: moonlight-qt-deb-*
           path: repo
-
-      - name: Retrieve moonlight-qt nightly packages
-        uses: actions/download-artifact@v4
-        with:
-          name: moonlight-qt-nightly-deb
-          path: repo
+          merge-multiple: true
 
       - uses: morph027/apt-repo-action@v3
         id: create-apt-repo
