@@ -1,6 +1,6 @@
 
 # Use latest compatible Debian version
-FROM amd64/debian:bookworm-slim
+FROM amd64/debian:trixie-slim
 
 COPY 0001-custom-repo-version.patch /tmp/
 
@@ -20,13 +20,10 @@ RUN mkdir -p /opt/scripts && \
 
 WORKDIR /moonlight-packaging
 
-# Copied from Dockerfile.amd64.buster and slightly changed by changing COPY to RUN mv
+# Copied from Dockerfile.amd64.trixie and slightly changed by changing COPY to RUN mv
 ### start ###
 ENV TARGET=desktop
-ENV DISTRO=bookworm
-
-ARG GIT_REPO="https://github.com/moonlight-stream/moonlight-qt"
-ARG COMMIT="v6.1.0"
+ENV DISTRO=trixie
 
 ENV GIT_REPO=${GIT_REPO}
 ENV COMMIT=${COMMIT}
@@ -39,7 +36,6 @@ RUN /bin/bash -c /opt/scripts/install-base-deps.sh && \
 
 RUN mv dav1d /opt/dav1d
 RUN mv FFmpeg /opt/FFmpeg
-RUN mv nv-codec-headers /opt/nv-codec-headers
 RUN mv SDL2 /opt/SDL2
 RUN mv SDL_ttf /opt/SDL_ttf
 
