@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build moonlight-qt
         run: |
@@ -49,7 +49,7 @@ jobs:
           docker rm "$container_id"
 
       - name: Upload Debian package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: moonlight-qt-deb-${{ matrix.name }}
           path: ./out/*.deb
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Build kodi
         run: |
@@ -73,7 +73,7 @@ jobs:
           docker rm "$container_id"
 
       - name: Upload Debian package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: kodi-deb
           path: |
@@ -93,19 +93,19 @@ jobs:
       keyring: ${{ steps.create-apt-repo.outputs.keyring }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Retrieve kodi packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: kodi-deb
           path: repo
 
       - name: Retrieve moonlight-qt packages
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           pattern: moonlight-qt-deb-*
           path: repo
@@ -126,7 +126,7 @@ jobs:
           cp .github/workflows/repo_index.html "${{ steps.create-apt-repo.outputs.dir }}/index.html" 
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           name: github-pages
           path: ${{ steps.create-apt-repo.outputs.dir }}
