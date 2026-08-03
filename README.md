@@ -2,6 +2,8 @@
 
 Some Debian packages I build for my personal use. **All builds are done by GitHub Actions directly from source code**, so there should be no trust issues.
 
+All packages are built on and designed to run on Debian 13 "trixie".
+
 To add this repository as source:
 
 ```shell
@@ -29,10 +31,24 @@ actually a fork of the one written by @veldenb.
 
 ## kodi
 
-> Actually only some of the Kodi packages are available. You can install them along with the other official Debian packages.
-
 Kodi for Debian is built for the GL platform. For some reason, Kodi developers implemented HDR only for the GLES
 platform. So I'm building Kodi by forcing the GLES platform. **Please note that HDR works only if Kodi is launched from
 TTY** (using the command `kodi-standalone`).
 
+> Kodi 22 (currently in beta) fixes the issue this build was made for. Once Kodi 22 is published to
+> Debian stable, this build will no longer be necessary.
+
 This build takes the original Debian package and just patches the build script.
+
+This repository contains the following versions of Kodi:
+
+* Omega 21.2 (currently in Debian trixie)
+* Omega 21.3 (currently in Debian testing, backported to trixie)
+
+Only the following packages are built:
+
+* `kodi`
+* `kodi-bin`
+* `kodi-data`
+
+Other `kodi-*` packages can be installed from Debian directly: they are compatible.
