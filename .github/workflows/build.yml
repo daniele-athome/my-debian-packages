@@ -55,8 +55,17 @@ jobs:
           path: ./out/*.deb
 
   build-kodi:
-    name: Build kodi
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - DEBIAN_RELEASE: trixie
+            name: 21.2
+
+          - DEBIAN_RELEASE: testing
+            name: 21.3
+
+    name: Build kodi (${{ matrix.name }})
 
     steps:
       - name: Checkout repository
@@ -64,7 +73,7 @@ jobs:
 
       - name: Build kodi
         run: |
-          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" -t build-kodi kodi
+          docker build --build-arg="DEBIAN_RELEASE=${{ matrix.DEBIAN_RELEASE }}" --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" -t build-kodi kodi
 
       - name: Extract Debian package from image
         run: |
@@ -75,7 +84,7 @@ jobs:
       - name: Upload Debian package
         uses: actions/upload-artifact@v6
         with:
-          name: kodi-deb
+          name: kodi-deb-${{ matrix.name }}
           path: |
             ./out/kodi_*.deb
             ./out/kodi-bin_*.deb
@@ -101,8 +110,9 @@ jobs:
       - name: Retrieve kodi packages
         uses: actions/download-artifact@v7
         with:
-          name: kodi-deb
+          pattern: kodi-deb-*
           path: repo
+          merge-multiple: true
 
       - name: Retrieve moonlight-qt packages
         uses: actions/download-artifact@v7
