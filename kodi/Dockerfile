@@ -1,6 +1,8 @@
 FROM amd64/debian:trixie-slim
 
-COPY sources.list /etc/apt/sources.list.d/debian-other.list
+ARG DEBIAN_RELEASE
+
+COPY sources-${DEBIAN_RELEASE}.list /etc/apt/sources.list.d/debian-other.list
 
 RUN mkdir /out && \
     apt-get update && \
