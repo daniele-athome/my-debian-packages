@@ -55,15 +55,17 @@ jobs:
           path: ./out/*.deb
 
   build-kodi:
-    name: Build kodi (${{ matrix.name }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         include:
           - DEBIAN_RELEASE: trixie
             name: 21.2
+
           - DEBIAN_RELEASE: testing
             name: 21.3
+
+    name: Build kodi (${{ matrix.name }})
 
     steps:
       - name: Checkout repository
@@ -108,7 +110,7 @@ jobs:
       - name: Retrieve kodi packages
         uses: actions/download-artifact@v7
         with:
-          name: kodi-deb-*
+          pattern: kodi-deb-*
           path: repo
           merge-multiple: true
 
