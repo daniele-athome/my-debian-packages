@@ -55,7 +55,7 @@ jobs:
           path: ./out/*.deb
 
   build-kodi:
-    name: Build kodi
+    name: Build kodi (${{ matrix.name }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Build kodi
         run: |
-          docker build --build-arg="DEBIAN_RELEASE=${{ env.DEBIAN_RELEASE }}" --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" -t build-kodi kodi
+          docker build --build-arg="DEBIAN_RELEASE=${{ matrix.DEBIAN_RELEASE }}" --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" -t build-kodi kodi
 
       - name: Extract Debian package from image
         run: |
