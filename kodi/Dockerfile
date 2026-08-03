@@ -3,11 +3,10 @@ FROM amd64/debian:trixie-slim
 ARG DEBIAN_RELEASE
 
 COPY sources-${DEBIAN_RELEASE}.list /etc/apt/sources.list.d/debian-other.list
-COPY pinning-${DEBIAN_RELEASE} /etc/apt/preferences.d/pinning
 
 RUN mkdir /out && \
     apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y build-dep kodi && \
+    DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y build-dep kodi/${DEBIAN_RELEASE} && \
     DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends -y install devscripts && \
     apt-get clean
 

@@ -1,3 +1,2 @@
-deb http://ftp.debian.org/debian/ testing main non-free non-free-firmware contrib
 deb-src http://ftp.debian.org/debian/ testing main non-free non-free-firmware contrib
 deb-src http://ftp.debian.org/debian/ trixie main non-free non-free-firmware contrib
