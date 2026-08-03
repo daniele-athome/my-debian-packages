@@ -82,7 +82,7 @@ jobs:
       - name: Upload Debian package
         uses: actions/upload-artifact@v6
         with:
-          name: kodi-deb
+          name: kodi-deb-${{ matrix.name }}
           path: |
             ./out/kodi_*.deb
             ./out/kodi-bin_*.deb
@@ -108,7 +108,7 @@ jobs:
       - name: Retrieve kodi packages
         uses: actions/download-artifact@v7
         with:
-          name: kodi-deb
+          name: kodi-deb-*
           path: repo
           merge-multiple: true
 
