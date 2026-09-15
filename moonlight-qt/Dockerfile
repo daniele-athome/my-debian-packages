@@ -14,8 +14,9 @@ RUN mkdir -p /opt/scripts && \
     DEBIAN_FRONTEND=noninteractive apt-get --no-install-recommends install -y git ca-certificates patch && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    git clone --revision=bf44b0ac9996eb6f100bdd24e82d6db8faf85c09 --depth=1 https://github.com/cgutman/moonlight-packaging && \
+    git clone https://github.com/cgutman/moonlight-packaging && \
     cd moonlight-packaging && \
+    git checkout bf44b0ac9996eb6f100bdd24e82d6db8faf85c09 && \
     patch -p1 < /tmp/0001-custom-repo-version.patch && \
     rm -f /tmp/0001-custom-repo-version.patch && \
     git submodule update --init --recursive && \
