@@ -206,7 +206,7 @@ jobs:
       - name: Upload the package as a build artifact
         uses: actions/upload-artifact@v6
         with:
-          name: uv-deb-${{ env.VERSION }}
+          name: uv-deb-${{ matrix.UV_VERSION }}-${{ matrix.UV_DEBIAN_ARCH }}
           path: dist/*.deb
           if-no-files-found: error
 
@@ -238,6 +238,13 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           pattern: moonlight-qt-deb-*
+          path: repo
+          merge-multiple: true
+
+      - name: Retrieve uv packages
+        uses: actions/download-artifact@v7
+        with:
+          pattern: uv-deb-*
           path: repo
           merge-multiple: true
 
