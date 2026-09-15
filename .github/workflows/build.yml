@@ -92,6 +92,124 @@ jobs:
             ./out/kodi-data_*.deb
           if-no-files-found: error
 
+  build-uv:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        include:
+          - UV_VERSION: ""
+            UV_ARCH: "x86_64-unknown-linux-gnu"
+            UV_DEBIAN_ARCH: "amd64"
+
+    # TODO use variables in job name
+    name: Build uv
+
+    steps:
+      - name: Download uv release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PKG_VERSION: ${{ matrix.UV_VERSION }}
+          PKG_ARCH: ${{ matrix.UV_ARCH }}
+        run: |
+          set -euo pipefail
+          mkdir -p dl
+
+          if [ -n "$PKG_VERSION" ]; then
+            TAG="$PKG_VERSION"
+          else
+            TAG="$(gh release view --repo astral-sh/uv --json tagName -q .tagName)"
+          fi
+          echo "Selected tag: $TAG"
+
+          # The glob also grabs the checksum file in the same call.
+          gh release download "$TAG" \
+            --repo astral-sh/uv \
+            --pattern 'uv-'"$PKG_ARCH"'.tar.gz*' \
+            --dir dl
+
+          echo "VERSION=${TAG}" >> "$GITHUB_ENV"
+
+      - name: Extract binaries
+        env:
+          PKG_ARCH: ${{ matrix.UV_ARCH }}
+        run: |
+          set -euo pipefail
+          TARBALL=dl/uv-${PKG_ARCH}.tar.gz
+
+          mkdir -p extract build
+          tar -xzf "$TARBALL" -C extract
+
+          UV_BIN="$(find extract -type f -name uv | head -n1)"
+          UVX_BIN="$(find extract -type f -name uvx | head -n1)"
+          test -n "$UV_BIN" && test -n "$UVX_BIN"
+
+          install -m 0755 "$UV_BIN"  build/uv
+          install -m 0755 "$UVX_BIN" build/uvx
+          ./build/uv --version
+
+      - name: Generate nfpm config
+        env:
+          DEB_ARCH: ${{ matrix.DEBIAN_ARCH }}
+        run: |
+          set -euo pipefail
+          cat > nfpm.yaml <<EOF
+          name: "uv"
+          arch: "${DEB_ARCH}"
+          platform: "linux"
+          version: "${VERSION}"
+          version_schema: "semver"
+          release: "1"
+          section: "utils"
+          priority: "optional"
+          maintainer: "Astral Software Inc. <hey@astral.sh>"
+          description: |
+            An extremely fast Python package and project manager.
+            Unofficial package built from the upstream release binaries.
+          homepage: "https://github.com/astral-sh/uv"
+          license: "MIT OR Apache-2.0"
+          depends:
+            - libc6
+          contents:
+            - src: ./build/uv
+              dst: /usr/bin/uv
+              file_info:
+                mode: 0755
+            - src: ./build/uvx
+              dst: /usr/bin/uvx
+              file_info:
+                mode: 0755
+          EOF
+          cat nfpm.yaml
+
+      - name: Install nfpm
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NFPM_VERSION: v2.47.0
+        run: |
+          set -euo pipefail
+          gh release download "$NFPM_VERSION" \
+            --repo goreleaser/nfpm \
+            --pattern 'nfpm_*_amd64.deb' \
+            --dir /tmp/nfpm
+          sudo apt-get install -y /tmp/nfpm/nfpm_*_amd64.deb
+          nfpm --version
+
+      - name: Build deb package
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          nfpm package --config nfpm.yaml --packager deb --target dist/
+          ls -l dist/
+
+      - name: Upload the package as a build artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: uv-deb-${{ env.VERSION }}
+          path: dist/*.deb
+          if-no-files-found: error
+
   build-repository:
     name: Create APT repository
     needs:
