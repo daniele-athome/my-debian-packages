@@ -53,6 +53,7 @@ jobs:
         with:
           name: moonlight-qt-deb-${{ matrix.name }}
           path: ./out/*.deb
+          if-no-files-found: error
 
   build-kodi:
     runs-on: ubuntu-latest
@@ -89,6 +90,7 @@ jobs:
             ./out/kodi_*.deb
             ./out/kodi-bin_*.deb
             ./out/kodi-data_*.deb
+          if-no-files-found: error
 
   build-repository:
     name: Create APT repository
