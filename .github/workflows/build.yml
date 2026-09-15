@@ -206,7 +206,7 @@ jobs:
       - name: Upload the package as a build artifact
         uses: actions/upload-artifact@v6
         with:
-          name: uv-deb-${{ matrix.UV_VERSION }}-${{ matrix.UV_DEBIAN_ARCH }}
+          name: uv-deb-${{ env.VERSION }}-${{ matrix.UV_DEBIAN_ARCH }}
           path: dist/*.deb
           if-no-files-found: error
 
