@@ -25,11 +25,18 @@ jobs:
       matrix:
         include:
           - MOONLIGHT_REPO: https://github.com/moonlight-stream/moonlight-qt
+            MOONLIGHT_COMMIT: v6.2.0
+            PACKAGING_COMMIT: ac0c1c0889be1c4b39e17fb5c2dbaa9f9fcf9446
+            name: v6.2.0
+
+          - MOONLIGHT_REPO: https://github.com/moonlight-stream/moonlight-qt
             MOONLIGHT_COMMIT: v6.1.0
-            name: stable
+            PACKAGING_COMMIT: bf44b0ac9996eb6f100bdd24e82d6db8faf85c09
+            name: v6.1.0
 
           - MOONLIGHT_REPO: https://github.com/games-on-whales/moonlight-qt
             MOONLIGHT_COMMIT: 1c06825543037c5ba1477847128942e8b8d9d798
+            PACKAGING_COMMIT: bf44b0ac9996eb6f100bdd24e82d6db8faf85c09
             name: nightly
 
     name: Build moonlight-qt (${{ matrix.name }})
@@ -40,7 +47,11 @@ jobs:
 
       - name: Build moonlight-qt
         run: |
-          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" --build-arg="GIT_REPO=${{ matrix.MOONLIGHT_REPO }}" --build-arg="GIT_COMMIT=${{ matrix.MOONLIGHT_COMMIT }}" -t build-moonlight-qt moonlight-qt
+          docker build --build-arg="DEBEMAIL=${{ env.DEBEMAIL }}" \
+              --build-arg="GIT_REPO=${{ matrix.MOONLIGHT_REPO }}" \
+              --build-arg="GIT_COMMIT=${{ matrix.MOONLIGHT_COMMIT }}" \
+              --build-arg="PKG_COMMIT=${{ matrix.PACKAGING_COMMIT }}" \
+            -t build-moonlight-qt moonlight-qt
 
       - name: Extract Debian package from image
         run: |

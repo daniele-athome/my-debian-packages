@@ -4,6 +4,9 @@ FROM amd64/debian:trixie-slim
 
 ARG GIT_REPO
 ARG GIT_COMMIT
+ARG PKG_COMMIT
+
+ENV PKG_COMMIT=${PKG_COMMIT}
 
 COPY 0001-custom-repo-version.patch /tmp/
 
@@ -16,7 +19,7 @@ RUN mkdir -p /opt/scripts && \
     rm -rf /var/lib/apt/lists/* && \
     git clone https://github.com/cgutman/moonlight-packaging && \
     cd moonlight-packaging && \
-    git checkout bf44b0ac9996eb6f100bdd24e82d6db8faf85c09 && \
+    git checkout ${PKG_COMMIT} && \
     patch -p1 < /tmp/0001-custom-repo-version.patch && \
     rm -f /tmp/0001-custom-repo-version.patch && \
     git submodule update --init --recursive && \
